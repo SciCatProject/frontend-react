@@ -26,12 +26,12 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
 
     useEffect(() => {
         if (data && data.length > 0) {
-            setAutocompleteData(prevData => {
+            setAutocompleteData((prevData) => {
                 const newData = [
                     {
                         id: 1,
                         label: "Type",
-                        selectedOptions: [],
+                        selectedOptions: prevData.find(item => item.label === "Type")?.selectedOptions || [],
                         options: data[0].type.map((typeItem: any) => ({
                             title: `${typeItem._id} (${typeItem.count})`
                         }))
@@ -39,7 +39,7 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
                     {
                         id: 2,
                         label: "Location",
-                        selectedOptions: [],
+                        selectedOptions: prevData.find(item => item.label === "Location")?.selectedOptions || [],
                         options: data[0].creationLocation.map((locationItem: any) => ({
                             title: `${locationItem._id} (${locationItem.count})`
                         }))
@@ -47,7 +47,7 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
                     {
                         id: 3,
                         label: "Owner",
-                        selectedOptions: [],
+                        selectedOptions: prevData.find(item => item.label === "Owner")?.selectedOptions || [],
                         options: data[0].ownerGroup.map((ownerItem: any) => ({
                             title: `${ownerItem._id} (${ownerItem.count})`
                         }))
@@ -55,7 +55,7 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
                     {
                         id: 4,
                         label: "Keywords",
-                        selectedOptions: [],
+                        selectedOptions: prevData.find(item => item.label === "Keywords")?.selectedOptions || [],
                         options: data[0].keywords.map((keywordItem: any) => ({
                             title: `${keywordItem._id} (${keywordItem.count})`
                         }))
@@ -67,6 +67,8 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
     }, [data]);
 
     useEffect(() => {
+
+
         const selectedFilters = autocompleteData.flatMap((item) =>
             item.selectedOptions.map((option: any) => {
                 const titleParts = option.title.split(' ');
@@ -83,6 +85,9 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
         }
 
         // console.log(selectedFilters)
+
+        console.log('autocomplete data: ', autocompleteData);
+        console.log('selected filters: ', selectedFilters)
 
         onFiltersChange(selectedFilters);
     }, [autocompleteData, onFiltersChange, startDate, endDate]);
@@ -123,6 +128,11 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
         setIsVisible(!isVisible);
     };
 
+    const isOptionEqualToValue = (option: any, value: any) => {
+        // Customize the comparison logic here
+        return option.title === value.title;
+    };
+
     return (
 
         <div>
@@ -149,6 +159,7 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
                                         getOptionLabel={(option) => option.title}
                                         onChange={handleSelectChange(item.id)}
                                         value={item.selectedOptions}
+                                        isOptionEqualToValue={isOptionEqualToValue}
                                         renderInput={(params) => (
                                             <TextField
                                                 {...params}
