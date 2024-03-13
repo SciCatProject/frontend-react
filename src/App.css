@@ -1,0 +1,151 @@
+#root {
+  width: 100%;
+  /* margin: 0 auto; */
+  /* padding: 2rem; */
+  /* text-align: center; */
+  /* background-color: #0099C8; */
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  outline: 0;
+}
+
+.buttonBackground {
+  background-color: #0099C8 !important;
+}
+
+.MuiButton-root {
+  color: #0099C8;
+}
+
+.img {
+  width: 5rem;
+  padding: 1rem;
+}
+
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.filter-table {
+  padding: 1rem;
+  position: absolute;
+  width: 20%;
+  border: #ddd solid 1px;
+}
+
+.filter-table>* {
+  margin: 10px;
+}
+
+.searchBar {
+  width: 100%;
+  text-align: center;
+  padding: 2rem;
+  height: 7rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.searchBar>input {
+  width: 35rem;
+}
+
+.table {
+  margin-top: 20px;
+  position: absolute;
+  right: 30px;
+  /* left: 30px; */
+  border-collapse: collapse;
+  width: 75%;
+  table-layout: auto;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.rowButton {
+  cursor: pointer;
+}
+
+.descriptionCell {
+  padding: 0;
+  border: 1px solid #ddd;
+  /* padding: 8px; */
+  max-height: 10px;
+  /* transition: max-height 0.3s ease; */
+}
+
+.descriptionContainer {
+  /* display: flex; */
+  /* align-items: left; */
+  max-height: 100px;
+  max-width: 500px
+}
+
+.descriptionText {
+  margin-left: 10px;
+  padding: 0;
+}
+
+select {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: text;
+}
+
+.filterStack {
+  padding: 10px;
+  margin-left: 10px;
+  /* border: rgb(204, 203, 203) 1px solid;
+  border-radius: 5px; */
+  width: 20vw;
+  position: relative;
+  top: 10.6rem;
+  margin-right: 10px;
+}
+
+.filterStack>* {
+  padding: 10px;
+}
+
+.drawerContent {
+  padding: 16px;
+}
+
+.filterStackContainer {
+  transition: left 0.5s;
+}
+
+.filterStackContainer.visible {
+  left: 0;
+}
+
+.filterStackContainer.hidden {
+  left: -100%;
+}
+
+.container {
+  display: flex;
+  align-items: baseline;
+  position: relative;
+}
+
+.tableRow:hover {
+  background-color: rgb(243, 241, 241);
+}
