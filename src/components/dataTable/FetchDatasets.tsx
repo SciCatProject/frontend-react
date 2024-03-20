@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ReactNode } from "react";
 import { usePagination } from "./pagination/PaginationContext";
+import { BASE_URL } from "../../../config";
 
 export interface Data {
     [key: string]: any;
@@ -19,11 +20,13 @@ const FetchData: React.FC<FetchDataProps> = ({ children }) => {
 
     // console.log('limit: ', limit, 'skip: ', skip);
 
+    const url = `${BASE_URL}datasets/fullquery?limits={"limit": ${limit}, "skip": ${skip}}&fields={}`
+
     useEffect(() => {
         // console.log('Fetching data with rowsPerPage:', rowsPerPage, 'and page:', page);
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/v3/datasets/fullquery?limits={"limit": ${limit}, "skip": ${skip}}&fields={}`, {
+                const response = await fetch(url, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',

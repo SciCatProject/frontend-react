@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ReactNode } from "react";
+import { BASE_URL } from '../../../../config.tsx';
 
 export interface Options {
     _id: string,
@@ -17,19 +18,22 @@ interface FetchDataProps {
     selectedFilters: string[];
 }
 
+const fullfacetEndpoint = `datasets/fullfacet?facets=["type","creationLocation","ownerGroup","keywords"]`
+
 const FetchFullfacet: React.FC<FetchDataProps> = React.memo(({ children, selectedFilters }) => {
     const [data, setData] = useState<Data[]>([]);
-    const [url, setUrl] = useState<string>('http://localhost:3000/api/v3/datasets/fullfacet?facets=["type","creationLocation","ownerGroup","keywords"]&fields={}');
+    const [url, setUrl] = useState<string>(`${BASE_URL}${fullfacetEndpoint}`);
 
     useEffect(() => {
-        let updatedUrl = 'http://localhost:3000/api/v3/datasets/fullfacet?facets=["type","creationLocation","ownerGroup","keywords"]&fields={}';
+
+        let updatedUrl = `${BASE_URL}${fullfacetEndpoint}`;
 
         if (selectedFilters.length > 0) {
-            updatedUrl = `http://localhost:3000/api/v3/datasets/fullfacet?facets=["type","creationLocation","ownerGroup","keywords"]&fields={${selectedFilters}}`
+            updatedUrl = `${BASE_URL}${fullfacetEndpoint}&fields={${selectedFilters}}`;
         }
 
-        console.log(url)
         setUrl(updatedUrl)
+        console.log(updatedUrl);
     }, [selectedFilters])
 
     useEffect(() => {

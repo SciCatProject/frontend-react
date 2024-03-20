@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { usePagination } from '../dataTable/pagination/PaginationContext';
 import { Data } from './filters/FetchFullfacet';
+import { BASE_URL } from '../../../config';
 
 interface SearchDataProps {
     children: (data: Data[]) => React.ReactNode;
@@ -15,10 +16,12 @@ const SearchData: React.FC<SearchDataProps> = ({ children, searchParams }) => {
     const skip = rowsPerPage * page;
     console.log(limit, skip)
 
+    const url = `${BASE_URL}Datasets/fullquery?fields={"mode":{},${searchParams}}&limits={"skip":${skip},"limit":${limit}}`
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                fetch(`http://localhost:3000/api/v3/Datasets/fullquery?fields={"mode":{},${searchParams}}&limits={"skip":${skip},"limit":${limit}}`, {
+                fetch(url, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
