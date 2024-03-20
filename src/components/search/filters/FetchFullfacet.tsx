@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactNode } from "react";
-import { BASE_URL } from '../../../../config.tsx';
+import { BASE_URL } from '../../../../config';
 
 export interface Options {
     _id: string,
