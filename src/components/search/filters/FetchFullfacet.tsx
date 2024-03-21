@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ReactNode } from "react";
+import { BASE_URL } from '../../../../config';
 
 export interface Options {
     _id: string,
@@ -14,16 +15,30 @@ export interface Data {
 
 interface FetchDataProps {
     children: (data: Data[]) => ReactNode;
-
+    selectedFilters: string[];
 }
 
-const FetchFullfacet: React.FC<FetchDataProps> = ({ children }) => {
-    const [data, setData] = useState<Data[]>([]);
+const fullfacetEndpoint = `datasets/fullfacet?facets=["type","creationLocation","ownerGroup","keywords"]`
 
+const FetchFullfacet: React.FC<FetchDataProps> = React.memo(({ children, selectedFilters }) => {
+    const [data, setData] = useState<Data[]>([]);
+    const [url, setUrl] = useState<string>(`${BASE_URL}${fullfacetEndpoint}`);
+
+    useEffect(() => {
+
+        let updatedUrl = `${BASE_URL}${fullfacetEndpoint}`;
+
+        if (selectedFilters.length > 0) {
+            updatedUrl = `${BASE_URL}${fullfacetEndpoint}&fields={${selectedFilters}}`;
+        }
+
+        setUrl(updatedUrl)
+        console.log(updatedUrl);
+    }, [selectedFilters])
 
     useEffect(() => {
         const fetchData = () => {
-            fetch('http://localhost:3000/api/v3/datasets/fullfacet?facets=%5B%22type%22%2C%22creationLocation%22%2C%22ownerGroup%22%2C%22keywords%22%5D&fields=%7B%7D', {
+            fetch(url, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -33,7 +48,7 @@ const FetchFullfacet: React.FC<FetchDataProps> = ({ children }) => {
             })
                 .then(response => response.json())
                 .then(data => {
-                    // console.log(data);
+                    console.log(data);
                     setData(data)
                 })
                 .catch(error => {
@@ -41,9 +56,9 @@ const FetchFullfacet: React.FC<FetchDataProps> = ({ children }) => {
                 })
         }
         fetchData();
-    }, []);
+    }, [url]);
 
     return <>{children(data)}</>
-};
+});
 
 export default FetchFullfacet;
