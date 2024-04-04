@@ -6,12 +6,16 @@ import { Chip, Paper } from '@mui/material';
 import '../../../App.css'
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
-import { Data } from './FetchFullfacet';
+export interface Data {
+    type: any[],
+    ownerGroup: any[],
+    creationLocation: any[],
+    keywords: any[]
+}
 
 interface FilterStackProps {
     onFiltersChange: (selectedFilters: string[]) => void;
@@ -90,11 +94,6 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
         if (startDate && endDate) {
             selectedFilters.push(`"creationTime": {"begin": "${startDate.toISOString().split('T')[0]}", "end": "${endDate.toISOString().split('T')[0]}"}`)
         }
-
-        // console.log(selectedFilters)
-
-        console.log('autocomplete data: ', autocompleteData);
-        console.log('selected filters: ', selectedFilters)
 
         onFiltersChange(selectedFilters);
     }, [autocompleteData, onFiltersChange, startDate, endDate]);
