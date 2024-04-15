@@ -1,17 +1,18 @@
 import React, { useState, useContext, createContext, useEffect, useCallback } from "react";
 import { usePagination } from "../dataTable/pagination/PaginationContext";
 import { BASE_URL } from "../../../config";
+import { token } from "../../../tokenObj"
 
 interface FetchDataContextType {
   datasets: any[];
-  searchDatasets: any[];
+  filteredDatasets: any[];
   facets: any[];
-  urlSearchParams: string | null;
+  urlSearchParams: string;
   urlSelectedFilters: any[];
-  setUrlSearchParams: React.Dispatch<React.SetStateAction<string | null>>;
+  setUrlSearchParams: React.Dispatch<React.SetStateAction<string>>;
   setUrlSelectedFilters: React.Dispatch<React.SetStateAction<any[]>>;
   fetchDatasets: () => Promise<void>;
-  fetchSearchDatasets: () => Promise<void>;
+  fetchFilteredDatasets: () => Promise<void>;
   fetchCount: () => Promise<void>;
   fetchFacets: () => Promise<void>;
 }
@@ -31,14 +32,16 @@ const tokenObj = {
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWE3YWRhYzQwM2IzZGViZDE0NzNmNzYiLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLnNpdGUiLCJhdXRoU3RyYXRlZ3kiOiJsb2NhbCIsIl9fdiI6MCwiaWQiOiI2NWE3YWRhYzQwM2IzZGViZDE0NzNmNzYiLCJpYXQiOjE3MDYyNjA2NjgsImV4cCI6MTcwNjI2NDI2OH0.RZwXIj2tIX2mH8DET9WfpR5ijU7IVvk44u7uF71yiFc'
+    'Authorization': `'${token}'`
   }
 };
+
 
 const buildUrl = (endpoint: string, queryParams?: string) => {
   let url = `${BASE_URL}${endpoint}`
   if (queryParams) {
-    url += `${queryParams}`
+    const query = encodeURI(queryParams);
+    url += `${query}`
   }
   return url
 }
@@ -46,9 +49,9 @@ const buildUrl = (endpoint: string, queryParams?: string) => {
 export const FetchDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [datasets, setDatasets] = useState<any[]>([]);
   const [facets, setFacets] = useState<any[]>([]);
-  const [searchDatasets, setSearchDatasets] = useState<any[]>([]);
+  const [filteredDatasets, setFilteredDatasets] = useState<any[]>([]);
 
-  const [urlSearchParams, setUrlSearchParams] = useState<string | null>(null);
+  const [urlSearchParams, setUrlSearchParams] = useState<string>('');
   const [urlSelectedFilters, setUrlSelectedFilters] = useState<any[]>([]);
 
   const { rowsPerPage, page, setCount } = usePagination();
@@ -71,14 +74,14 @@ export const FetchDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }, [limit, skip])
 
 
-  const fetchSearchDatasets = useCallback(async () => {
+  const fetchFilteredDatasets = useCallback(async () => {
 
     const url = buildUrl(`Datasets/fullquery`, `?fields={"mode":{},${urlSearchParams}}&limits={"skip":${skip},"limit":${limit}}`);
 
     try {
       const response = await fetch(url, tokenObj);
       const data = await response.json();
-      setSearchDatasets(data);
+      setFilteredDatasets(data);
       return data;
     } catch (error) {
       console.error('Error fetching search datasets:', error);
@@ -130,10 +133,10 @@ export const FetchDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }, [fetchDatasets, fetchCount]);
 
   useEffect(() => {
-    if (urlSearchParams !== null) {
-      fetchSearchDatasets();
+    if (urlSearchParams.length !== 0) {
+      fetchFilteredDatasets();
     }
-  }, [urlSearchParams, fetchSearchDatasets]);
+  }, [urlSearchParams, fetchFilteredDatasets]);
 
   useEffect(() => {
     fetchFacets();
@@ -142,14 +145,14 @@ export const FetchDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const value = {
     datasets,
-    searchDatasets,
+    filteredDatasets,
     facets,
-    urlSearchParams: urlSearchParams || null,
+    urlSearchParams,
     urlSelectedFilters,
     setUrlSearchParams,
     setUrlSelectedFilters,
     fetchDatasets,
-    fetchSearchDatasets,
+    fetchFilteredDatasets,
     fetchCount,
     fetchFacets
   };

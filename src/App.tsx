@@ -11,7 +11,7 @@ const App: React.FC = () => {
   // const [searchParams, setSearchParams] = useState<any>(null);
   const [searchPerformed, setSearchPerformed] = useState<boolean>(false);
 
-  const { datasets, searchDatasets } = useFetchData();
+  const { datasets, filteredDatasets } = useFetchData();
 
   const handleSearchParams = (params: string | null) => {
     // setSearchParams(params);
@@ -27,7 +27,7 @@ const App: React.FC = () => {
         <div style={{ width: '100vw' }}>
 
           {searchPerformed ? (
-            <DataTable data={searchDatasets} columns={columns} />
+            <DataTable data={filteredDatasets} columns={columns} />
           ) : (
             <DataTable data={datasets} columns={columns} />
           )}
