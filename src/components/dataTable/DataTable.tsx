@@ -12,9 +12,11 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
 import Card from '@mui/material/Card';
 import BuildIcon from '@mui/icons-material/Build';
-import { Data } from './FetchDatasets';
+import { usePagination } from "./pagination/PaginationContext";
 
-import { usePagination } from './pagination/PaginationContext';
+interface Data {
+    [key: string]: any;
+}
 
 interface TableProps {
   data: Data[];

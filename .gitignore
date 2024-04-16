@@ -5,6 +5,7 @@
 
 # Configs
 .env
+tokenObj.ts
 
 # Logs
 logs

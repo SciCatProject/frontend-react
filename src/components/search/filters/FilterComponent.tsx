@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useMemo } from "react";
-import FetchFullfacet from "./FetchFullfacet";
+import React, { useState, useCallback, useEffect } from "react";
 import FilterStack from "./FilterStack";
-import { Data } from "./FetchFullfacet";
+
+import { useFetchData } from "../../context/FetchDataContext";
 
 interface FilterComponentProps {
     onFiltersChange: (selectedFilters: string[]) => void;
@@ -9,21 +9,26 @@ interface FilterComponentProps {
 
 const FilterComponent: React.FC<FilterComponentProps> = React.memo(({ onFiltersChange }) => {
     const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+    const [previousSelectedFilters, setPreviousSelectedFilters] = useState<string[]>([]);
+
+    const { facets, setUrlSelectedFilters } = useFetchData();
 
     const handleFiltersChange = useCallback((filters: string[]) => {
         setSelectedFilters(filters);
         onFiltersChange(filters);
     }, [onFiltersChange]);
 
-    const children = useMemo(() => {
-        return (data: Data[]) => <FilterStack onFiltersChange={handleFiltersChange} data={data} />;
-    }, [handleFiltersChange]);
+    useEffect(() => {
+        if (selectedFilters.length !== 0 && JSON.stringify(selectedFilters) !== JSON.stringify(previousSelectedFilters)) {
+            setUrlSelectedFilters(selectedFilters);
+        }
 
+        setPreviousSelectedFilters(selectedFilters);
+    }, [selectedFilters, setUrlSelectedFilters, previousSelectedFilters]);
 
     return (
         <>
-            <FetchFullfacet selectedFilters={selectedFilters} children={children}>
-            </FetchFullfacet>
+            <FilterStack onFiltersChange={handleFiltersChange} data={facets} />
         </>
     )
 });
