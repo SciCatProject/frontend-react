@@ -8,6 +8,8 @@ import { usePagination } from "./pagination/PaginationContext";
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import useResize from './DataTableResize'
+
 const customTheme = createTheme({
     components: {
         MUIDataTableHeadCell: {
@@ -15,6 +17,7 @@ const customTheme = createTheme({
                 root: {
                     backgroundColor: '#0099C8;',
                     color: 'white !important',
+                    whiteSpace: 'nowrap'
                 },
             },
         },
@@ -46,6 +49,7 @@ interface TableProps {
 
 const DataTable: React.FC<TableProps> = ({ data, columns }) => {
     const { count, page, rowsPerPage, setPage, setRowsPerPage } = usePagination();
+    const { resizeRef } = useResize();
 
     // console.log(data)
 
@@ -87,7 +91,8 @@ const DataTable: React.FC<TableProps> = ({ data, columns }) => {
     };
 
     return (
-        <div style={{ position: 'relative', top: '13.5rem', overflowX: "auto", width: '100%' }}>
+        <div style={{ position: 'relative', top: '13.5rem', overflowX: "auto", width: '100%' }}
+            ref={resizeRef}>
             <ThemeProvider theme={customTheme}>
                 <Paper elevation={1} style={{ padding: '5px' }}>
                     <MUIDataTable
