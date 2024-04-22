@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FormEvent } from 'react';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
+import { useSearchParams } from '../context/SearchParamsContext';
 
 interface SearchBarProps {
   searchQuery: string;
@@ -8,10 +9,12 @@ interface SearchBarProps {
   onSearch: () => void;
 }
 
-// @ts-ignore
 const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery, onSearch }) => {
+  const { query, setQuery } = useSearchParams();
+
   const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
+    setQuery(event.target.value);
   };
 
   const handleSearchSubmit = (event: FormEvent) => {
@@ -28,6 +31,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery, onSe
           variant='outlined'
           size='small'
           style={{ width: 500, paddingRight: 10 }}
+          value={query}
           onChange={handleSearchInputChange}
         />
 

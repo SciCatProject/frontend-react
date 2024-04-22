@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import { Chip, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 import '../../../App.css';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
+import { useSearchParams } from '../../context/SearchParamsContext';
+
 export interface Data {
-    type: any[],
-    ownerGroup: any[],
-    creationLocation: any[],
-    keywords: any[]
+  type: any[],
+  ownerGroup: any[],
+  creationLocation: any[],
+  keywords: any[]
 }
 
 interface FilterStackProps {
@@ -23,115 +24,103 @@ interface FilterStackProps {
 }
 
 const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
-    const [autocompleteData, setAutocompleteData] = useState<Array<any>>([]);
-    const [isVisible, setIsVisible] = useState(true);
-    const [startDate, setStartDate] = useState<Date | null>(null);
-    const [endDate, setEndDate] = useState<Date | null>(null);
+  const [autocompleteData, setAutocompleteData] = useState<Array<any>>([]);
+  const [isVisible, setIsVisible] = useState(true);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
-    useEffect(() => {
-        if (data && data.length > 0) {
-            setAutocompleteData((prevData) => {
-                const newData = [
-                    {
-                        id: 1,
-                        label: "Type",
-                        selectedOptions: prevData.find(item => item.label === "Type")?.selectedOptions || [],
-                        options: data[0].type.map((typeItem: any) => ({
-                            title: `${typeItem._id}`,
-                            count: typeItem.count
-                        }))
-                    },
-                    {
-                        id: 2,
-                        label: "Location",
-                        selectedOptions: prevData.find(item => item.label === "Location")?.selectedOptions || [],
-                        options: data[0].creationLocation.map((locationItem: any) => ({
-                            title: `${locationItem._id}`,
-                            count: locationItem.count
-                        }))
-                    },
-                    {
-                        id: 3,
-                        label: "Owner",
-                        selectedOptions: prevData.find(item => item.label === "Owner")?.selectedOptions || [],
-                        options: data[0].ownerGroup.map((ownerItem: any) => ({
-                            title: `${ownerItem._id}`,
-                            count: ownerItem.count
-                        }))
-                    },
-                    {
-                        id: 4,
-                        label: "Keywords",
-                        selectedOptions: prevData.find(item => item.label === "Keywords")?.selectedOptions || [],
-                        options: data[0].keywords.map((keywordItem: any) => ({
-                            title: `${keywordItem._id}`,
-                            count: keywordItem.count
-                        }))
-                    },
-                ];
-                return newData;
-            });
-        }
-    }, [data]);
+  const { filters, setFilters } = useSearchParams();
+  const prevFiltersRef = useRef<string[]>([]);
 
-    useEffect(() => {
-        const labelToNameMapping: { [key: string]: string } = {
-            "Type": "type",
-            "Location": "creationLocation",
-            "Owner": "ownerGroup",
-            "Keywords": "keywords"
-        };
+  useEffect(() => {
+    if (data && data.length > 0) {
+      setAutocompleteData((prevData) => {
+        const newData = [
+          {
+            id: 1,
+            label: "Type",
+            selectedOptions: prevData.find(item => item.label === "Type")?.selectedOptions || [],
+            options: data[0].type.map((typeItem: any) => ({
+              title: `${typeItem._id}`,
+              count: typeItem.count
+            }))
+          },
+          {
+            id: 2,
+            label: "Location",
+            selectedOptions: prevData.find(item => item.label === "Location")?.selectedOptions || [],
+            options: data[0].creationLocation.map((locationItem: any) => ({
+              title: `${locationItem._id}`,
+              count: locationItem.count
+            }))
+          },
+          {
+            id: 3,
+            label: "Owner",
+            selectedOptions: prevData.find(item => item.label === "Owner")?.selectedOptions || [],
+            options: data[0].ownerGroup.map((ownerItem: any) => ({
+              title: `${ownerItem._id}`,
+              count: ownerItem.count
+            }))
+          },
+          {
+            id: 4,
+            label: "Keywords",
+            selectedOptions: prevData.find(item => item.label === "Keywords")?.selectedOptions || [],
+            options: data[0].keywords.map((keywordItem: any) => ({
+              title: `${keywordItem._id}`,
+              count: keywordItem.count
+            }))
+          },
+        ];
+        return newData;
+      });
+    }
+  }, [data]);
 
-        const selectedFilters = autocompleteData.flatMap((item) =>
-            item.selectedOptions.map((option: any) => {
-                const titleParts = option.title.split(' ');
-                const id = titleParts[0];
-                const label = labelToNameMapping[item.label];
-                return `"${label}":["${id}"]`;
-            })
-        );
+  useEffect(() => {
+    const labelToNameMapping: { [key: string]: string } = {
+      "Type": "type",
+      "Location": "creationLocation",
+      "Owner": "ownerGroup",
+      "Keywords": "keywords"
+    };
 
-        if (startDate && endDate) {
-            selectedFilters.push(`"creationTime": {"begin": "${startDate.toISOString().split('T')[0]}", "end": "${endDate.toISOString().split('T')[0]}"}`)
-        }
+    const selectedFilters = autocompleteData.flatMap((item) =>
+      item.selectedOptions.map((option: any) => {
+        const titleParts = option.title.split(' ');
+        const id = titleParts[0];
+        const label = labelToNameMapping[item.label];
+        return `"${label}":["${id}"]`;
+      })
+    );
 
-        onFiltersChange(selectedFilters);
-    }, [autocompleteData, onFiltersChange, startDate, endDate]);
-
-    if (!data || data.length === 0) {
-        return <div></div>; // loading indicator
+    if (startDate && endDate) {
+      selectedFilters.push(`"creationTime": {"begin": "${startDate.toISOString().split('T')[0]}", "end": "${endDate.toISOString().split('T')[0]}"}`)
     }
 
-  
+    onFiltersChange(selectedFilters);
+    setFilters(selectedFilters);
+  }, [autocompleteData, onFiltersChange, startDate, endDate]);
+
+  useEffect(() => {
+    if (prevFiltersRef.current.length !== 0 && filters.length === 0) {
+      setAutocompleteData((data) => data.map((item) => ({ ...item, selectedOptions: [] })));
+    }
+    prevFiltersRef.current = filters;
+  }, [filters]);
 
   const handleSelectChange =
     (index: number) =>
-    (
-      // @ts-ignore
-      event: React.SyntheticEvent,
-      newValue: any[]
-    ) => {
-      setAutocompleteData((data) =>
-        data.map((item) => (item.id === index ? { ...item, selectedOptions: newValue } : item))
-      );
-    };
-
-  const handleDeleteChip = (index: number, chipToDelete: any) => () => {
-    setAutocompleteData((data) =>
-      data.map((item) =>
-        item.id === index
-          ? {
-              ...item,
-              selectedOptions: item.selectedOptions.filter((chip: any) => chip !== chipToDelete),
-            }
-          : item
-      )
-    );
-  };
-
-  const handleClearButton = () => {
-    setAutocompleteData((data) => data.map((item) => ({ ...item, selectedOptions: [] })));
-  };
+      (
+        // @ts-ignore
+        event: React.SyntheticEvent,
+        newValue: any[]
+      ) => {
+        setAutocompleteData((data) =>
+          data.map((item) => (item.id === index ? { ...item, selectedOptions: newValue } : item))
+        );
+      };
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
@@ -151,18 +140,6 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
         <div className={`filterStackContainer ${isVisible ? 'visible' : 'hidden'}`}>
           <Paper className='filterStack' variant='outlined' style={{ width: '300px' }}>
             <Typography variant='h6'>Filters</Typography>
-            <Button
-              variant='contained'
-              className='buttonBackground'
-              onClick={handleClearButton}
-              style={{
-                position: 'absolute',
-                top: '15px',
-                right: '15px',
-              }}
-            >
-              Clear
-            </Button>
             <Stack spacing={3} sx={{}}>
               {autocompleteData.map((item) => (
                 <div key={item.id}>
@@ -209,45 +186,6 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
           </Paper>
         </div>
       )}
-
-      <Stack
-        direction='row'
-        spacing={1}
-        style={{
-          width: '500px',
-          position: 'absolute',
-          top: '90px',
-          left: '50%',
-          transform: 'translateX(-60%)',
-        }}
-      >
-        {autocompleteData.flatMap((item) =>
-          item.selectedOptions.map((option: any) => {
-            const labelText = option.title.split(' ')[0];
-            return (
-              <Chip
-                key={`${item.id}-${option.title}`}
-                label={labelText}
-                onDelete={handleDeleteChip(item.id, option)}
-              />
-            );
-          })
-        )}
-        {startDate && (
-          <Chip
-            key='start-date'
-            label={`Start Date: ${startDate.toISOString().split('T')[0]}`}
-            onDelete={() => setStartDate(null)}
-          />
-        )}
-        {endDate && (
-          <Chip
-            key='end-date'
-            label={`End Date: ${endDate.toISOString().split('T')[0]}`}
-            onDelete={() => setEndDate(null)}
-          />
-        )}
-      </Stack>
     </div>
   );
 };

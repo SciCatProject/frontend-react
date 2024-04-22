@@ -2,29 +2,30 @@ import React, { useState, useCallback, useEffect } from "react";
 import FilterStack from "./FilterStack";
 
 import { useFetchData } from "../../context/FetchDataContext";
+import { useSearchParams } from "../../context/SearchParamsContext";
 
 interface FilterComponentProps {
     onFiltersChange: (selectedFilters: string[]) => void;
 }
 
 const FilterComponent: React.FC<FilterComponentProps> = React.memo(({ onFiltersChange }) => {
-    const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
     const [previousSelectedFilters, setPreviousSelectedFilters] = useState<string[]>([]);
 
     const { facets, setUrlSelectedFilters } = useFetchData();
+    const { filters, setFilters } = useSearchParams();
 
-    const handleFiltersChange = useCallback((filters: string[]) => {
-        setSelectedFilters(filters);
-        onFiltersChange(filters);
-    }, [onFiltersChange]);
+    const handleFiltersChange = useCallback((newFilters: string[]) => {
+        onFiltersChange(newFilters);
+        setFilters(newFilters)
+    }, [onFiltersChange, setFilters]);
 
     useEffect(() => {
-        if (selectedFilters.length !== 0 && JSON.stringify(selectedFilters) !== JSON.stringify(previousSelectedFilters)) {
-            setUrlSelectedFilters(selectedFilters);
+        if (JSON.stringify(filters) !== JSON.stringify(previousSelectedFilters)) {
+            setUrlSelectedFilters(filters);
         }
 
-        setPreviousSelectedFilters(selectedFilters);
-    }, [selectedFilters, setUrlSelectedFilters, previousSelectedFilters]);
+        setPreviousSelectedFilters(filters);
+    }, [filters, setUrlSelectedFilters, previousSelectedFilters]);
 
     return (
         <>
