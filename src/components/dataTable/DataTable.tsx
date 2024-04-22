@@ -41,17 +41,22 @@ const customTheme = createTheme({
     },
 });
 
+interface Data {
+    [key: string]: any;
+}
+
 interface TableProps {
-    data: Data[];
-    columns: { name: string; label: string, options?: any }[];
+  data: Data[];
+  columns: { id: string; label: string }[];
 }
 
 
 const DataTable: React.FC<TableProps> = ({ data, columns }) => {
+  
     const { count, page, rowsPerPage, setPage, setRowsPerPage } = usePagination();
     const { resizeRef } = useResize();
 
-    // console.log(data)
+  // console.log(data)
 
     const handleChangePage = (event: unknown, newPage: number) => {
         console.log('new page: ', newPage)
@@ -106,6 +111,5 @@ const DataTable: React.FC<TableProps> = ({ data, columns }) => {
         </div>
     );
 };
-
 
 export default DataTable;

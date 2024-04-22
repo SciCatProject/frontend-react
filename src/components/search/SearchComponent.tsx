@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SearchBar from "./SearchBar";
 import FilterComponent from "./filters/FilterComponent";
+import { useFetchData } from "../context/FetchDataContext";
 
 interface SearchParams {
-    onSearchParamsChange: (params: string | null) => void;
+  onSearchParamsChange: (params: string | null) => void;
 }
 
 const SearchComponent: React.FC<SearchParams> = ({ onSearchParamsChange }) => {
+
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [filters, setFilters] = useState<string[]>([]);
 
+    const { setUrlSearchParams } = useFetchData();
+
     const handleSearch = () => {
-        // console.log('Text Search:', searchQuery);
-        // console.log('Filters applied: ', filters);
 
         if (searchQuery.trim() === '' && filters.length === 0) {
             console.log('Empty search query and filters. Aborting search');
@@ -32,6 +34,7 @@ const SearchComponent: React.FC<SearchParams> = ({ onSearchParamsChange }) => {
         }
 
         onSearchParamsChange(searchParamsString);
+        setUrlSearchParams(searchParamsString)
     };
 
     return (
