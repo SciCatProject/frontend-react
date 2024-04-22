@@ -21,7 +21,7 @@ export const usePagination = () => {
 
 export const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(25);
     const [count, setCount] = useState(0);
 
     const value = {

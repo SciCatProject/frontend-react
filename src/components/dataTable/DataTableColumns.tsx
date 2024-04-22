@@ -1,16 +1,118 @@
+const cellStyle: React.CSSProperties = {
+    boxSizing: "border-box",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
+};
+
+const renderCell = (val: any) => {
+    const parentStyle: React.CSSProperties = {
+        position: "absolute",
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        boxSizing: "border-box",
+        display: "block",
+        width: "100%"
+    };
+
+    return (
+        <div style={{ position: "relative", height: "20px" }}>
+            <div style={parentStyle}>
+                <div style={cellStyle}>{val}</div>
+            </div>
+        </div>
+    );
+};
 
 export const columns = [
-    { id: "pid", label: "PID" },
-    { id: "datasetName", label: "Name" },
-    // { id: "description", label: "Description" },
-    { id: "runNumber", label: "Run No" },
-    { id: "sourceFolder", label: "Source Folder" },
-    { id: "size", label: "Size" },
-    { id: "creationTime", label: "Creation Time" },
-    { id: "type", label: "Type" },
-    { id: "image", label: "Image" },
-    { id: "metadata", label: "Metadata" },
-    { id: "proposalId", label: "Proposal ID" },
-    { id: "ownerGroup", label: "Group" },
-    { id: "dataStatus", label: "Status" },
+    {
+        name: "pid", label: "PID",
+        options: {
+            customBodyRender: renderCell
+        }
+    },
+    {
+        name: "datasetName",
+        label: "Name",
+        options: {
+            customBodyRender: renderCell
+        }
+    },
+    {
+        name: "runNumber",
+        label: "Run No",
+        options: {
+            customBodyRender: renderCell
+        }
+    },
+    {
+        name: "sourceFolder",
+        label: "Source Folder",
+        options: {
+            customBodyRender: renderCell,
+            display: false
+        }
+    },
+    {
+        name: "size",
+        label: "Size",
+        options: {
+            customBodyRender: renderCell
+        }
+    },
+    {
+        name: "creationTime",
+        label: "Creation Time",
+        options: {
+            customBodyRender: renderCell
+        }
+    },
+    {
+        name: "type",
+        label: "Type",
+        options: {
+            customBodyRender: renderCell
+        }
+    },
+    {
+        name: "image",
+        label: "Image",
+        options: {
+            customBodyRender: renderCell
+        }
+    },
+    {
+        name: "metadata",
+        label: "Metadata",
+        options: {
+            customBodyRender: renderCell,
+            display: false
+        }
+    },
+    {
+        name: "proposalId",
+        label: "Proposal ID",
+        options: {
+            customBodyRender: renderCell
+        }
+    },
+    {
+        name: "ownerGroup",
+        label: "Group",
+        options: {
+            customBodyRender: renderCell,
+            display: false
+        }
+    },
+    {
+        name: "dataStatus",
+        label: "Status",
+        options: {
+            customBodyRender: renderCell,
+            display: false
+        }
+    },
 ];
+
