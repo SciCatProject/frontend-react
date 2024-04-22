@@ -8,7 +8,7 @@ import { usePagination } from "./pagination/PaginationContext";
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import useResize from './DataTableResize'
+import useResize from '../hooks/DataTableResize'
 
 const customTheme = createTheme({
     components: {
