@@ -1,20 +1,19 @@
 import './App.css'
-import React, { useState } from 'react'
+import React from 'react'
 import SearchComponent from './components/search/SearchComponent'
 import Header from './components/ui/Header'
 import DataTable from './components/dataTable/DataTable'
 import { columns } from './components/dataTable/DataTableColumns'
 import { useFetchData } from './components/context/FetchDataContext'
+import { useSearchParams } from './components/context/SearchParamsContext'
 
 
 const App: React.FC = () => {
-  // const [searchParams, setSearchParams] = useState<any>(null);
-  const [searchPerformed, setSearchPerformed] = useState<boolean>(false);
 
   const { datasets, filteredDatasets } = useFetchData();
+  const { searchPerformed, setSearchPerformed } = useSearchParams();
 
   const handleSearchParams = (params: string | null) => {
-    // setSearchParams(params);
     setSearchPerformed(!!params);
   };
 

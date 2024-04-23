@@ -2,31 +2,34 @@ import React, { useState } from "react";
 import SearchBar from "./SearchBar";
 import FilterComponent from "./filters/FilterComponent";
 import { useFetchData } from "../context/FetchDataContext";
+import { Button } from "@mui/material";
+import { useSearchParams } from "../context/SearchParamsContext";
+import { usePagination } from "../dataTable/pagination/PaginationContext";
 
 interface SearchParams {
-  onSearchParamsChange: (params: string | null) => void;
+    onSearchParamsChange: (params: string | null) => void;
 }
 
 const SearchComponent: React.FC<SearchParams> = ({ onSearchParamsChange }) => {
+    const { query, setQuery, setFilters, filters, setSearchPerformed } = useSearchParams();
+    const { setUrlSearchParams } = useFetchData();
+    const { setPage } = usePagination();
 
     const [searchQuery, setSearchQuery] = useState<string>('');
-    const [filters, setFilters] = useState<string[]>([]);
-
-    const { setUrlSearchParams } = useFetchData();
 
     const handleSearch = () => {
 
-        if (searchQuery.trim() === '' && filters.length === 0) {
+        if (!query.trim() && !filters.length) {
             console.log('Empty search query and filters. Aborting search');
             return;
         }
 
         let searchParamsString: string | null = null;
 
-        if (searchQuery === '') {
+        if (!query) {
             searchParamsString = `${filters}`;
         } else {
-            searchParamsString = `"text":"${searchQuery}"`;
+            searchParamsString = `"text":"${query}"`;
 
             if (filters.length > 0) {
                 searchParamsString += `,${filters.join(',')}`;
@@ -34,8 +37,17 @@ const SearchComponent: React.FC<SearchParams> = ({ onSearchParamsChange }) => {
         }
 
         onSearchParamsChange(searchParamsString);
-        setUrlSearchParams(searchParamsString)
+        setUrlSearchParams(searchParamsString);
+        setPage(0)
     };
+
+    const handleClear = () => {
+        setSearchPerformed(false)
+        setFilters([])
+        setQuery('')
+        setUrlSearchParams('')
+        setPage(0)
+    }
 
     return (
         <div>
@@ -44,6 +56,9 @@ const SearchComponent: React.FC<SearchParams> = ({ onSearchParamsChange }) => {
                 setSearchQuery={setSearchQuery}
                 onSearch={handleSearch} />
             <FilterComponent onFiltersChange={setFilters} />
+            <Button type='submit' variant='contained' className='buttonBackground' onClick={handleClear} style={{ position: 'absolute', top: '10px', left: '10px' }}>
+                Clear
+            </Button>
         </div>
 
     )
