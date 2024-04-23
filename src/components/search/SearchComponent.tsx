@@ -4,6 +4,7 @@ import FilterComponent from "./filters/FilterComponent";
 import { useFetchData } from "../context/FetchDataContext";
 import { Button } from "@mui/material";
 import { useSearchParams } from "../context/SearchParamsContext";
+import { usePagination } from "../dataTable/pagination/PaginationContext";
 
 interface SearchParams {
     onSearchParamsChange: (params: string | null) => void;
@@ -11,21 +12,21 @@ interface SearchParams {
 
 const SearchComponent: React.FC<SearchParams> = ({ onSearchParamsChange }) => {
     const { query, setQuery, setFilters, filters, setSearchPerformed } = useSearchParams();
+    const { setUrlSearchParams } = useFetchData();
+    const { setPage } = usePagination();
 
     const [searchQuery, setSearchQuery] = useState<string>('');
 
-    const { setUrlSearchParams } = useFetchData();
-
     const handleSearch = () => {
 
-        if (query.trim() === '' && filters.length === 0) {
+        if (!query.trim() && !filters.length) {
             console.log('Empty search query and filters. Aborting search');
             return;
         }
 
         let searchParamsString: string | null = null;
 
-        if (query === '') {
+        if (!query) {
             searchParamsString = `${filters}`;
         } else {
             searchParamsString = `"text":"${query}"`;
@@ -37,6 +38,7 @@ const SearchComponent: React.FC<SearchParams> = ({ onSearchParamsChange }) => {
 
         onSearchParamsChange(searchParamsString);
         setUrlSearchParams(searchParamsString);
+        setPage(0)
     };
 
     const handleClear = () => {
@@ -44,6 +46,7 @@ const SearchComponent: React.FC<SearchParams> = ({ onSearchParamsChange }) => {
         setFilters([])
         setQuery('')
         setUrlSearchParams('')
+        setPage(0)
     }
 
     return (
