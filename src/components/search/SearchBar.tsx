@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import { useSearchParams } from '../context/SearchParamsContext';
 
 interface SearchBarProps {
+  searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   onSearch: () => void;
 }
