@@ -11,7 +11,7 @@ interface SearchParams {
 }
 
 const SearchComponent: React.FC<SearchParams> = ({ onSearchParamsChange }) => {
-    const { query, setQuery, setFilters, filters, setSearchPerformed } = useSearchParams();
+    const { query, setQuery, setFilters, filters, setSearchPerformed, setCurrentSearch } = useSearchParams();
     const { setUrlSearchParams } = useFetchData();
     const { setPage } = usePagination();
 
@@ -39,6 +39,7 @@ const SearchComponent: React.FC<SearchParams> = ({ onSearchParamsChange }) => {
         onSearchParamsChange(searchParamsString);
         setUrlSearchParams(searchParamsString);
         setPage(0)
+        setCurrentSearch(searchParamsString);
     };
 
     const handleClear = () => {
@@ -56,7 +57,7 @@ const SearchComponent: React.FC<SearchParams> = ({ onSearchParamsChange }) => {
                 setSearchQuery={setSearchQuery}
                 onSearch={handleSearch} />
             <FilterComponent onFiltersChange={setFilters} />
-            <Button type='submit' variant='contained' className='buttonBackground' onClick={handleClear} style={{ position: 'absolute', top: '10px', left: '10px' }}>
+            <Button type='submit' variant='contained' className='buttonBackground clearButton' onClick={handleClear} style={{ position: 'absolute', top: '10px', left: '595px' }}>
                 Clear
             </Button>
         </div>

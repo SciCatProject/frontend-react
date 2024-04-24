@@ -6,7 +6,7 @@ import essLogo from '../../assets/esslogo-white.png'
 const Header: React.FC = () => {
     return (
         <AppBar position="static" style={{ backgroundColor: '#0099C8' }}>
-            <Toolbar style={{ justifyContent: 'space-between' }}>
+            <Toolbar style={{ justifyContent: 'space-between', height: '4rem' }}>
                 <div>
                     <img className='img' src={scicatLogo} alt="" />
                     <img className='img' src={essLogo} alt="" />
