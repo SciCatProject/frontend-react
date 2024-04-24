@@ -26,7 +26,16 @@ const renderCell = (val: any) => {
     );
 };
 
-export const columns = [
+export interface Column {
+    name: string;
+    label: string;
+    options: {
+        customBodyRender: (val: any) => JSX.Element;
+        display?: boolean;
+    };
+}
+
+export const columns: Column[] = [
     {
         name: "pid", label: "PID",
         options: {
