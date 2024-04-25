@@ -91,8 +91,6 @@ const DataTable: React.FC<TableProps> = ({ data, columns }) => {
         download: false,
         print: false,
         search: false,
-        fixedHeader: true,
-        viewColumns: true,
     };
 
     return (
