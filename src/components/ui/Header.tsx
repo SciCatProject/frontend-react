@@ -9,7 +9,7 @@ const Header: React.FC = () => {
             <Toolbar style={{ justifyContent: 'space-between', height: '4rem' }}>
                 <div>
                     <img className='img' src={scicatLogo} alt="" />
-                    <img className='img' src={essLogo} alt="" />
+                    <img style={{ paddingBottom: '15px', width: '7rem' }} className='img' src={essLogo} alt="" />
                 </div>
                 <div>
                     <a href="">Help</a>
