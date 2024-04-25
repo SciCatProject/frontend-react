@@ -21,7 +21,7 @@ const App: React.FC = () => {
   return (
     <>
       <Header />
-      <div className='container'>
+      <div className='appContainer'>
         <SearchComponent onSearchParamsChange={handleSearchParams} />
         <ShowCurrentSearchQuery></ShowCurrentSearchQuery>
 

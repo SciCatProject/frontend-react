@@ -84,7 +84,7 @@ export const FetchDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       setFilteredDatasets(data);
       return data;
     } catch (error) {
-      console.error('Error fetching search datasets:', error);
+      console.error('Error fetching filtered datasets:', error);
     }
   }, [limit, skip, urlSearchParams])
 
