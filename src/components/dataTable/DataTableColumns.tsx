@@ -31,7 +31,6 @@ export interface Column {
     label: string;
     options: {
         customBodyRender: (val: any) => JSX.Element;
-        display?: boolean;
     };
 }
 
@@ -60,8 +59,7 @@ export const columns: Column[] = [
         name: "sourceFolder",
         label: "Source Folder",
         options: {
-            customBodyRender: renderCell,
-            display: false
+            customBodyRender: renderCell
         }
     },
     {
@@ -96,8 +94,7 @@ export const columns: Column[] = [
         name: "metadata",
         label: "Metadata",
         options: {
-            customBodyRender: renderCell,
-            display: false
+            customBodyRender: renderCell
         }
     },
     {
@@ -111,16 +108,14 @@ export const columns: Column[] = [
         name: "ownerGroup",
         label: "Group",
         options: {
-            customBodyRender: renderCell,
-            display: false
+            customBodyRender: renderCell
         }
     },
     {
         name: "dataStatus",
         label: "Status",
         options: {
-            customBodyRender: renderCell,
-            display: false
+            customBodyRender: renderCell
         }
     },
 ];
