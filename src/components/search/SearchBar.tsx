@@ -9,7 +9,7 @@ interface SearchBarProps {
   onSearch: () => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery, onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ setSearchQuery, onSearch }) => {
   const { query, setQuery } = useSearchParams();
 
   const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {

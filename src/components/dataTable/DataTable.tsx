@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Paper from "@mui/material/Paper";
-import { Data } from "./FetchDatasets";
 
 import MUIDataTable from "mui-datatables";
+import { Column } from "./DataTableColumns";
 
 import { usePagination } from "./pagination/PaginationContext";
 
@@ -47,7 +47,7 @@ interface Data {
 
 interface TableProps {
     data: Data[];
-    columns: { id: string; label: string }[];
+    columns: Column[];
 }
 
 
@@ -58,7 +58,7 @@ const DataTable: React.FC<TableProps> = ({ data, columns }) => {
 
     // console.log(data)
 
-    const handleChangePage = (event: unknown, newPage: number) => {
+    const handleChangePage = (_event: unknown, newPage: number) => {
         console.log('new page: ', newPage)
         console.log('this is the next page data: ')
         setPage(newPage);
