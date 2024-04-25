@@ -96,10 +96,10 @@ const DataTable: React.FC<TableProps> = ({ data, columns }) => {
     };
 
     return (
-        <div style={{ position: 'relative', top: '13.5rem', overflowX: "auto", width: '100%' }}
+        <div style={{ position: 'relative', top: '10rem', overflowX: "auto", width: '100%' }}
             ref={resizeRef}>
             <ThemeProvider theme={customTheme}>
-                <Paper elevation={1} style={{ padding: '5px' }}>
+                <Paper elevation={1} style={{ padding: '2px' }}>
                     <MUIDataTable
                         title={''}
                         data={data}

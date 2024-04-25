@@ -113,8 +113,7 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
   const handleSelectChange =
     (index: number) =>
       (
-        // @ts-ignore
-        event: React.SyntheticEvent,
+        _event: React.SyntheticEvent,
         newValue: any[]
       ) => {
         setAutocompleteData((data) =>
@@ -132,13 +131,13 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
 
   return (
     <div>
-      <IconButton onClick={toggleVisibility} style={{ position: 'relative', top: '10.2rem' }}>
+      <IconButton onClick={toggleVisibility} style={{ position: 'absolute', top: '8rem' }} size='small'>
         {isVisible ? <ArrowBackIosNewIcon /> : <MenuIcon />}
       </IconButton>
 
       {isVisible && (
         <div className={`filterStackContainer ${isVisible ? 'visible' : 'hidden'}`}>
-          <Paper className='filterStack' variant='outlined' style={{ width: '300px' }}>
+          <Paper elevation={3} className='filterStack' style={{ width: '300px', padding: '5px' }}>
             <Typography variant='h6'>Filters</Typography>
             <Stack spacing={3} sx={{}}>
               {autocompleteData.map((item) => (

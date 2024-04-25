@@ -36,7 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ setSearchQuery, onSearch }) => {
         />
 
         <Button type='submit' variant='contained' className='buttonBackground'>
-          Search
+          Apply
         </Button>
       </div>
     </form>

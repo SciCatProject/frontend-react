@@ -46,12 +46,13 @@
 
 .searchBar {
   width: 100%;
-  text-align: center;
-  padding: 2rem;
+  /* text-align: center; */
+  padding: 10px;
   height: 7rem;
   position: absolute;
   left: 0;
   right: 0;
+  top: 0;
 }
 
 .searchBar>input {
@@ -110,15 +111,16 @@ select {
 }
 
 .filterStack {
-  padding: 10px;
+  /* padding: 10px; */
   margin-left: 10px;
   /* border: rgb(204, 203, 203) 1px solid;
   border-radius: 5px; */
   width: 20vw;
   position: relative;
-  top: 10.6rem;
+  top: 10.4rem;
   margin-right: 10px;
 }
+
 
 .filterStack>* {
   padding: 10px;

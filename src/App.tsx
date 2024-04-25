@@ -6,6 +6,7 @@ import DataTable from './components/dataTable/DataTable'
 import { columns } from './components/dataTable/DataTableColumns'
 import { useFetchData } from './components/context/FetchDataContext'
 import { useSearchParams } from './components/context/SearchParamsContext'
+import ShowCurrentSearchQuery from './components/ui/ShowCurrentSearchQuery'
 
 
 const App: React.FC = () => {
@@ -22,6 +23,7 @@ const App: React.FC = () => {
       <Header />
       <div className='container'>
         <SearchComponent onSearchParamsChange={handleSearchParams} />
+        <ShowCurrentSearchQuery></ShowCurrentSearchQuery>
 
         <div style={{ width: '100vw' }}>
 
