@@ -13,10 +13,7 @@ Users can apply various filters to refine their search results. Filters include 
 The data table component offers extensive customization options for users. They can drag and drop columns to rearrange their order, resize columns for better visibility, and hide/show columns based on their preferences.
 
 ## Future Enhancements
-While this proof of concept demonstrates the core functionalities of the data catalog web application, there are several areas for future improvement:
-
-**User Authentication:** Implement user authentication and login functionality. <br>
-**Enhanced Dataset Information:** Provide additional details and metadata about selected datasets, enhancing the user experience and understanding of the data.
+While this proof of concept demonstrates the core functionalities of the data catalog web application, there are several areas for future improvement. In the [issues](https://github.com/SciCatProject/frontend-react/issues) tab in the repository, there are a few matters listed that should be resolved.
 
 ## Technologies Used
 The project leverages the following technologies and libraries:
