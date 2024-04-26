@@ -137,7 +137,7 @@ const FilterStack: React.FC<FilterStackProps> = ({ onFiltersChange, data }) => {
 
       {isVisible && (
         <div className={`filterStackContainer ${isVisible ? 'visible' : 'hidden'}`}>
-          <Paper elevation={3} className='filterStack' style={{ width: '300px', padding: '5px' }}>
+          <Paper className='filterStack' style={{ width: '300px', padding: '5px' }}>
             <Typography variant='h6'>Filters</Typography>
             <Stack spacing={3} sx={{}}>
               {autocompleteData.map((item) => (

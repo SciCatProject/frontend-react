@@ -56,22 +56,23 @@ const DataTable: React.FC<TableProps> = ({ data, columns }) => {
     const { count, page, rowsPerPage, setPage, setRowsPerPage } = usePagination();
     const { resizeRef } = useResize();
 
-    // console.log(data)
 
     const handleChangePage = (_event: unknown, newPage: number) => {
-        console.log('new page: ', newPage)
-        console.log('this is the next page data: ')
         setPage(newPage);
     };
 
     const handleChangeRowsPerPage = (newRowsPerPage: number) => {
-        console.log('New rows per page:', newRowsPerPage);
         setRowsPerPage(newRowsPerPage);
         setPage(0);
     };
 
 
     const options: any = {
+        textLabels: {
+            body: {
+                noMatch: 'No datasets found',
+            }
+        },
         pagination: true,
         paginationPosition: 'top',
         rowsPerPageOptions: [5, 10, 25, 50, 100, 500, 1000],
@@ -97,7 +98,7 @@ const DataTable: React.FC<TableProps> = ({ data, columns }) => {
         <div style={{ position: 'relative', top: '10rem', overflowX: "auto", width: '100%' }}
             ref={resizeRef}>
             <ThemeProvider theme={customTheme}>
-                <Paper elevation={1} style={{ padding: '2px' }}>
+                <Paper elevation={1} style={{ border: 'lightgray 1px solid', borderRadius: '5px' }}>
                     <MUIDataTable
                         title={''}
                         data={data}
